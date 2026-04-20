@@ -35,10 +35,3 @@ class DeadlineService():
         is_weekend = day.weekday() > 4
 
         return is_holiday or is_weekend
-
-if __name__ == '__main__':
-    a = DeadlineService()
-    deadline = a.calculate_deadline('2026-03-07')
-    print(deadline)
-    date_before_deadlines = a.get_reminder_dates(deadline)
-    print(date_before_deadlines)
