@@ -1,0 +1,3 @@
+fastapi
+fastapi[standart]
+uvicorn[standart]
