@@ -1,24 +1,20 @@
-# --- Байт-код и кэш Python ---
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 
-# --- Виртуальное окружение ---
 venv/
 env/
 .env
 .venv
 .python-version
 
-# --- Дистрибутивы и сборка пакетов ---
 build/
 dist/
 *.egg-info/
 *.egg
 .eggs/
 
-# --- Отчеты и кэши тестов ---
 .pytest_cache/
 .tox/
 .tox
@@ -28,18 +24,15 @@ htmlcov/
 .dmypy.json
 dmypy.json
 
-# --- Логи и базы данных ---
 *.log
 *.sqlite
 *.sqlite3
 
-# --- Файлы IDE и редакторов ---
 .idea/
 .vscode/
 *.swp
 *.swo
 *~
 
-# --- Файлы операционных систем ---
 .DS_Store
 Thumbs.db
