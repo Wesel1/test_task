@@ -2,6 +2,8 @@ import uvicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+from datetime import date
+
 from services import DeadlineService
 
 
@@ -9,16 +11,20 @@ service = DeadlineService()
 
 
 class Event(BaseModel):
-    event_date: str
+    event_date: date
 
 
 class Answer(BaseModel):
-    deadline: str
-    reminders: list[str]
+    deadline: date
+    reminders: list[date]
 
 
 app = FastAPI()
 
+
+@app.get('/')
+def home():
+    return {"status": "ok"}
 
 @app.post("/calculate", response_model=Answer)
 def calculate_deadlines(request: Event):
@@ -28,4 +34,4 @@ def calculate_deadlines(request: Event):
 
 
 if __name__ == '__main__':
-    uvicorn.run("main:app")
+    uvicorn.run("main:app", reload=True)
