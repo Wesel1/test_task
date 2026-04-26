@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, date
+from datetime import timedelta, date
 import holidays
 
 
@@ -7,10 +7,10 @@ class DeadlineService():
         self.ru_holidays = holidays.Russia()
         self.tuple_reminders = (1, 3, 7, 14, 30)
 
-    def calculate_deadline(self, event_date: date) -> date:
+    def calculate_deadline(self, event_date: date, days: int) -> date:
         deadline = event_date
         i = 0
-        while i < 3:
+        while i < days:
             deadline += timedelta(days=1)
             if not self.wrong_day(deadline):
                 i += 1

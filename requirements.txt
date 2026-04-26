@@ -1,4 +1,3 @@
 fastapi[standart]
 uvicorn[standart]
 holidays
-pydantic

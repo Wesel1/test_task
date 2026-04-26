@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 from datetime import date
@@ -22,15 +22,14 @@ class Answer(BaseModel):
 app = FastAPI()
 
 
-@app.get('/')
-def home():
-    return {"status": "ok"}
-
 @app.post("/calculate", response_model=Answer)
 def calculate_deadlines(request: Event):
-    deadline = service.calculate_deadline(event_date=request.event_date)
-    reminders = service.get_reminder_dates(deadline=deadline)
-    return Answer(deadline=deadline, reminders=reminders)
+    try:
+        deadline = service.calculate_deadline(event_date=request.event_date, days=3)
+        reminders = service.get_reminder_dates(deadline=deadline)
+        return Answer(deadline=deadline, reminders=reminders)
+    except:
+        raise HTTPException(status_code=400)
 
 
 if __name__ == '__main__':

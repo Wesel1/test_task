@@ -1,27 +1,38 @@
-from glob import translate
-
 from services import DeadlineService
 from datetime import datetime, date
 
 def trans(a: str) -> date:
     return datetime.fromisoformat(a).date()
 
-test_class = DeadlineService()
+service = DeadlineService()
 
-test_data = trans("2025-05-07")
-res = test_class.calculate_deadline(test_data)
-assert res == trans("2025-05-14"), f"Ожидалось - 2025-05-14, получилось - {res}"
+def test_feb28_2025():
+    deadline = service.calculate_deadline(trans("2025-02-28"), 3)
+    assert deadline == trans("2025-03-05"), f"Expected 2025-03-05, got {deadline}"
 
-test_data_2 = trans("2026-03-07")
-res_1 = test_class.calculate_deadline(test_data_2)
-assert res_1 == trans("2026-03-11"), f"Ожидалось - 2026-03-11, получилось - {res}"
+def test_mar6_2025():
+    deadline = service.calculate_deadline(trans("2025-03-06"), 3)
+    assert deadline == trans("2025-03-11"), f"Expected 2025-03-11, got {deadline}"
 
-test_list = ['2025-05-13', '2025-05-07', '2025-04-29', '2025-04-18', '2025-03-27']
-res_reminds = test_class.get_reminder_dates(res)
-assert res_reminds == [trans(i) for i in test_list], f'Даты напоминаний не сходятся'
+def test_monday_after_holiday():
+    deadline = service.calculate_deadline(trans("2025-05-12"), 3)
+    assert deadline == trans("2025-05-15"), f"Expected 2025-05-15, got {deadline}"
 
-one_hundred_percent_wrong_day = datetime.fromisoformat("2026-05-09")
-check = test_class.wrong_day(one_hundred_percent_wrong_day)
-assert check == True, f"Праздник определен не правильно"
+def test_reminder_dates():
+    deadline = trans("2025-03-05")
+    reminders = service.get_reminder_dates(deadline)
+    expected = [
+        "2025-03-04",
+        "2025-02-28",
+        "2025-02-24",
+        "2025-02-13",
+        "2025-01-22"
+    ]
+    assert reminders == [trans(i) for i in expected], f"Expected {expected}, got {reminders}"
 
-print("✅ Все тесты пройдены успешно! ✅")
+if __name__ == "__main__":
+    test_feb28_2025()
+    test_mar6_2025()
+    test_monday_after_holiday()
+    test_reminder_dates()
+    print("✅ Все тесты пройдены ✅")
