@@ -6,7 +6,6 @@ from datetime import date
 
 from services import DeadlineService
 
-
 service = DeadlineService()
 
 
@@ -32,5 +31,5 @@ def calculate_deadlines(request: Event):
         raise HTTPException(status_code=400)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     uvicorn.run("main:app", reload=True)

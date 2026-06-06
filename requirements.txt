@@ -1,3 +1,4 @@
-fastapi[standart]
-uvicorn[standart]
+fastapi[standard]
+uvicorn[standard]
 holidays
+pytest

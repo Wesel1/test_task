@@ -6,49 +6,36 @@ from main import app
 client = TestClient(app)
 
 
-def test_calculate_endpoint():
-    response = client.post(
-        "/calculate",
-        json={
-            "event_date": "2025-06-02"
-        }
-    )
+def test_calculate_endpoint_returns_deadline_and_reminders():
+    response = client.post("/calculate", json={"event_date": "2025-06-02"})
 
     assert response.status_code == 200
+    assert response.json() == {
+        "deadline": "2025-06-05",
+        "reminders": [
+            "2025-06-04",
+            "2025-06-02",
+            "2025-05-27",
+            "2025-05-16",
+            "2025-04-18",
+        ],
+    }
 
-    data = response.json()
 
-    assert data["deadline"] == "2025-06-05"
+def test_calculate_endpoint_skips_weekends_and_russian_holidays():
+    response = client.post("/calculate", json={"event_date": "2025-06-10"})
 
-    assert len(data["reminders"]) == 5
+    assert response.status_code == 200
+    assert response.json()["deadline"] == "2025-06-17"
 
-def test_response_contains_required_fields():
-    response = client.post(
-        "/calculate",
-        json={
-            "event_date": "2025-06-02"
-        }
-    )
 
-    data = response.json()
-
-    assert "deadline" in data
-    assert "reminders" in data
-
-def test_invalid_date():
-    response = client.post(
-        "/calculate",
-        json={
-            "event_date": "abracadabra"
-        }
-    )
+def test_calculate_endpoint_rejects_invalid_date():
+    response = client.post("/calculate", json={"event_date": "abracadabra"})
 
     assert response.status_code == 422
 
-def test_missing_event_date():
-    response = client.post(
-        "/calculate",
-        json={}
-    )
+
+def test_calculate_endpoint_requires_event_date():
+    response = client.post("/calculate", json={})
 
     assert response.status_code == 422

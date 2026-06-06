@@ -2,7 +2,7 @@ from datetime import timedelta, date
 import holidays
 
 
-class DeadlineService():
+class DeadlineService:
     def __init__(self):
         self.ru_holidays = holidays.Russia()
         self.tuple_reminders = (1, 3, 7, 14, 30)
@@ -16,7 +16,6 @@ class DeadlineService():
                 i += 1
         return deadline
 
-
     def get_reminder_dates(self, deadline: date) -> list[date]:
         date_reminders = []
         for i in self.tuple_reminders:
@@ -28,7 +27,6 @@ class DeadlineService():
                     count += 1
             date_reminders.append(deadline_copy)
         return date_reminders
-
 
     def wrong_day(self, day: date) -> True | False:
         is_holiday = day in self.ru_holidays
